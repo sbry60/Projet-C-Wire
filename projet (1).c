@@ -85,6 +85,16 @@ int max3(int a, int b, int c){
   return max2(a, max2(b, c));
 }
 
+
+
+int hauteur(Tree* pTree) {
+    if (pTree == NULL) {
+        return -1; // Convention : un nœud vide a une hauteur de -1
+    }
+    return 1 + max2(hauteur(pTree->sL), hauteur(pTree->sR));
+
+
+
 Tree* rotateLeft(Tree* root){
   if(root==NULL || root->sR == NULL){
       exit(6);
@@ -250,6 +260,25 @@ Tree* removeAVL(Tree* a, int v){
   return a;
 }
 
+/*// Équilibrer un arbre AVL
+Arbre* equilibrerAVL(Arbre* pRacine) {
+    if (pRacine->equilibre >= 2) {
+        if (pRacine->pDroit->equilibre >= 0) {
+            return rotationGauche(pRacine); // Rotation gauche simple
+        } else {
+            pRacine->pDroit = rotationDroite(pRacine->pDroit);
+            return rotationGauche(pRacine); // Double rotation gauche
+        }
+    } else if (pRacine->equilibre <= -2) {
+        if (pRacine->pGauche->equilibre <= 0) {
+            return rotationDroite(pRacine); // Rotation droite simple
+        } else {
+            pRacine->pGauche = rotationGauche(pRacine->pGauche);
+            return rotationDroite(pRacine); // Double rotation droite
+        }
+    }
+    return pRacine;
+}*/
 void whatistype(Type* type){
   if(type->id_comp!= 0){
     printf("Company");
