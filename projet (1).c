@@ -9,15 +9,10 @@ typedef struct _tree {
 } Tree;
 
 typedef struct _type {
-  int id_centrale;
-  int id_hvb;
-  int id_hva;
-  int id_lv;
-  int id_comp;
-  int id_indiv;
-  int id_capacity;
-  int id_load;
-} Type;
+  int id;
+  int capacity;
+  int load;
+} Component;
 
 Tree *createTree(int v) {
   Tree *nv = malloc(sizeof(Tree));
@@ -84,21 +79,16 @@ int min3(int a, int b, int c){
 int max3(int a, int b, int c){
   return max2(a, max2(b, c));
 }
-
-
-
-/*int hauteur(Tree* pTree) {
-    if (pTree == NULL) {
-        return -1; // Convention : un nœud vide a une hauteur de -1
+int sumTree(Tree* a) {
+    if (a == NULL) {
+        return 0;
     }
-    return 1 + max2(hauteur(pTree->sL), hauteur(pTree->sR));
-
-*/
-
+    return a->value + sumTree(a->sL) + sumTree(a->sR);
+}
 Tree* rotateLeft(Tree* root){
   if(root==NULL || root->sR == NULL){
-      exit(6);
-  }
+         exit(7);
+    }
   Tree* pivot  = root->sR;
   root->sR = pivot->sL;
   pivot->sL = root;
@@ -114,7 +104,7 @@ Tree* rotateRight(Tree* root){
       exit(7);
   }
   Tree* pivot  = root->sL;
-  root->sL = pivot->sL;
+  root->sL = pivot->sR;
   pivot->sR = root;
   int eqa = root->height;        
   int eqp = pivot->height;        
@@ -133,12 +123,13 @@ Tree* doubleRotateLeft(Tree* root){
 }
 Tree* doubleRotateRight(Tree* root){
   if(root==NULL || root->sL == NULL){
+      
       exit(9);
   }
   root->sL= rotateLeft(root->sL);
   return rotateRight(root);
 }
-Tree* HeightAVL(Tree* root){
+Tree* balanceAVL(Tree* root){
   if(root == NULL){
       exit(10);
   }
@@ -159,7 +150,7 @@ Tree* HeightAVL(Tree* root){
           exit(12);
       }
       if(root->sL->height <= 0){
-          root = rotateLeft(root);
+          root = rotateRight(root);
       }        
       else{
           root = doubleRotateRight(root);                        
@@ -183,25 +174,35 @@ int searchAVL(Tree* a, int v){
   }
 }
 
-Tree* insertAVL(Tree* a, int v){
-  if(a == NULL){
-      // insert
-      a = createTree(v);
-      if(a == NULL){
-          exit(13);
-      }
-  }    
-  else if(v < a->value){
-      a->sL = insertAVL(a->sL, v);
-  }
-  else if(v > a->value){
-      a->sR = insertAVL(a->sR, v);
-  }
-  else{
-      
-  }
-  return a;
+Tree* insertAVL(Tree* a, int v, int *h)
+{
+    if (a == NULL){
+        *h = 1;
+        return createTree(v);
+        
+    }
+    else if (v < a->value){ 
+        a->sL = insertAVL(a->sL, v, h);
+        *h = -*h; 
+        
+    }
+    else if (v > a->value){
+        a->sR = insertAVL(a->sR, v, h);
+    }
+    else{ 
+        *h = 0;
+        return a;
+    }
+    
+    if (*h != 0){
+        a->height += *h;
+        a = balanceAVL(a);
+        *h = (a->height == 0) ? 0 : 1; 
+    }
+   
+    return a;
 }
+
 
 void infix(Tree* a){
   if(a!=NULL){
@@ -260,42 +261,40 @@ Tree* removeAVL(Tree* a, int v){
   return a;
 }
 
-/*// Équilibrer un arbre AVL
-Arbre* equilibrerAVL(Arbre* pRacine) {
-    if (pRacine->equilibre >= 2) {
-        if (pRacine->pDroit->equilibre >= 0) {
-            return rotationGauche(pRacine); // Rotation gauche simple
-        } else {
-            pRacine->pDroit = rotationDroite(pRacine->pDroit);
-            return rotationGauche(pRacine); // Double rotation gauche
-        }
-    } else if (pRacine->equilibre <= -2) {
-        if (pRacine->pGauche->equilibre <= 0) {
-            return rotationDroite(pRacine); // Rotation droite simple
-        } else {
-            pRacine->pGauche = rotationGauche(pRacine->pGauche);
-            return rotationDroite(pRacine); // Double rotation droite
-        }
-    }
-    return pRacine;
-}*/
-void whatistype(Type* type){
-  if(type->id_comp!= 0){
-    printf("Company");
-  }
-  if(type->id_indiv!= 0 ){
-    printf("Individual");
-  }
-  if(type->id_hva!= 0 && type->id_indiv== 0 && type->id_comp== 0 ){
-    printf("Station HV-A");
-  }
-  if(type->id_hvb!= 0 && type->id_indiv== 0 && type->id_comp== 0 ){
-    printf("Station HV-B");
-  }
-}
-int main() {
-  // Write C code here
-  printf("Try programiz.pro");
 
-  return 0;
+int main() {
+    FILE *file = fopen("monfichier.txt", "w");
+
+    if (file == NULL) {
+        printf("Erreur lors de la création du fichier.\n");
+        return 1;
+    }
+    fprintf(file,"Identifiant;Capicité;Consommation\n");
+
+    
+    
+    Tree* ab=NULL;
+    int ret=0;
+    int v1,v2,v3;
+    int a;
+    int b;
+    ret=scanf("%d;%d;%d\n",&v1,&v2,&v3);
+    a=v1;
+    if(ret==3){
+        ab=createTree(v3);
+    }
+    do{
+        ret=scanf("%d;%d;%d\n",&v1,&v2,&v3);
+        if(ret==3 && a==v1 ){
+            ab=insertAVL(ab,v3,&b); 
+        }
+        else{
+            fprintf(file,"%d;-;%d\n",v1,sumTree(ab));
+            ab=NULL;
+            a=v1;
+        }
+    }while(ret==3);
+    fprintf(file,"%d;-;%d\n",v1,sumTree(ab));
+    fclose(file);
+    return 0;
 }
