@@ -79,7 +79,7 @@ int min3(int a, int b, int c){
 int max3(int a, int b, int c){
   return max2(a, max2(b, c));
 }
-int sumTree(Tree* a) {
+long sumTree(Tree* a) {
     if (a == NULL) {
         return 0;
     }
@@ -262,7 +262,7 @@ Tree* removeAVL(Tree* a, int v){
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
     FILE *file = fopen("monfichier.txt", "w");
 
     if (file == NULL) {
@@ -274,27 +274,34 @@ int main() {
     
     
     Tree* ab=NULL;
-    int ret=0;
-    int v1,v2,v3;
-    int a;
-    int b;
-    ret=scanf("%d;%d;%d\n",&v1,&v2,&v3);
-    a=v1;
-    if(ret==3){
-        ab=createTree(v3);
+    int ret1=0;
+    long v1,v2,v3,v4;
+    long a;
+    long b;
+    int h;
+    for(int i=0; i<2; i++){
+        ret1=scanf("%ld;%ld;%ld;%ld\n",&v1,&v2,&v3,&v4);
+        if(ret1==4 && v3==0 ){
+            a=v1;
+            ab=createTree(v4);
+        }
+        if(v3!=0) {
+            b=v3;
+        }
     }
     do{
-        ret=scanf("%d;%d;%d\n",&v1,&v2,&v3);
-        if(ret==3 && a==v1 ){
-            ab=insertAVL(ab,v3,&b); 
+        ret1=scanf("%ld;%ld;%ld;%ld\n",&v1,&v2,&v3,&v4);
+        if(ret1==4 && a==v1 && v4!=0){
+            ab=insertAVL(ab,v4,&h); 
         }
+        
         else{
-            fprintf(file,"%d;-;%d\n",v1,sumTree(ab));
-            ab=NULL;
+            fprintf(file,"%ld;%ld;%ld\n",a,b,sumTree(ab));
+            ab=createTree(v4);
             a=v1;
+            b=v3;
         }
-    }while(ret==3);
-    fprintf(file,"%d;-;%d\n",v1,sumTree(ab));
+    }while(ret1==4);
     fclose(file);
     return 0;
 }
