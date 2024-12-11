@@ -2,24 +2,23 @@
 #include <stdlib.h>
 
 typedef struct _tree {
-  int value;
+  long id;
+  long cap;
+  long load;
   struct _tree *sR;
   struct _tree *sL;
   int height;
 } Tree;
 
-typedef struct _type {
-  int id;
-  int capacity;
-  int load;
-} Component;
 
-Tree *createTree(int v) {
+Tree *createTree(long i,long c,long l) {
   Tree *nv = malloc(sizeof(Tree));
   if (nv == NULL) {
     exit(2);
   }
-  nv->value = v;
+  nv->id = i;
+  nv->cap = c;
+  nv->load = l;
   nv->sR = NULL;
   nv->sL = NULL;
   nv->height= 0;
@@ -28,12 +27,7 @@ Tree *createTree(int v) {
 int empty(Tree *a) { 
   return a == NULL; 
 }
-int element(Tree *a) {
-  if (empty(a)) {
-    exit(3);
-  }
-  return a->value;
-}
+
 
 int existSL(Tree *a) {
   if (empty(a)) {
@@ -47,11 +41,11 @@ int existSR(Tree *a){
   }
   return a->sR != NULL;
 }
-int addSL(Tree *a, int e) {
+int addSL(Tree *a, int i,int c,int l) {
   if (empty(a) || existSL(a)) {
     return 0;
   }
-  a->sL = createTree(e);
+  a->sL = createTree(i,c,l);
   return 1;
 }
 int getHeight(Tree* a) {
@@ -60,11 +54,11 @@ int getHeight(Tree* a) {
     return a->height;
 }
 
-int addSR(Tree *a, int e) {
+int addSR(Tree *a, long i,long c,long l) {
   if (empty(a) || existSR(a)) {
     return 0;
   }
-  a->sR = createTree(e);
+  a->sR = createTree(i,c,l);
   return 1;
 }
 int min2(int a, int b){
@@ -79,12 +73,7 @@ int min3(int a, int b, int c){
 int max3(int a, int b, int c){
   return max2(a, max2(b, c));
 }
-long sumTree(Tree* a) {
-    if (a == NULL) {
-        return 0;
-    }
-    return a->value + sumTree(a->sL) + sumTree(a->sR);
-}
+
 Tree* rotateLeft(Tree* root){
   if(root==NULL || root->sR == NULL){
          exit(7);
@@ -123,7 +112,7 @@ Tree* doubleRotateLeft(Tree* root){
 }
 Tree* doubleRotateRight(Tree* root){
   if(root==NULL || root->sL == NULL){
-      
+
       exit(9);
   }
   root->sL= rotateLeft(root->sL);
@@ -159,68 +148,69 @@ Tree* balanceAVL(Tree* root){
   return root;
 }
 
-int searchAVL(Tree* a, int v){
+int searchAVL(Tree* a, long v,Tree** b){
   if(a == NULL){
       return 0;
   }
-  else if(a->value == v){
+  else if(a->id == v){
+      *b=a;
       return 1;
   }
-  else if(v > a->value){
-      return searchAVL(a->sR, v);
+  else if(v > a->id){
+      return searchAVL(a->sR,v,b);
   }
   else{
-      return searchAVL(a->sL, v);
+      return searchAVL(a->sL,v,b);
   }
 }
 
-Tree* insertAVL(Tree* a, int v, int *h)
+Tree* insertAVL(Tree* a,  long i,long c,long l, int *h)
 {
     if (a == NULL){
         *h = 1;
-        return createTree(v);
-        
+        return createTree(i,c,l);
+
     }
-    else if (v < a->value){ 
-        a->sL = insertAVL(a->sL, v, h);
+    else if (i < a->id){ 
+        a->sL = insertAVL(a->sL,i,c,l,h);
         *h = -*h; 
-        
+
     }
-    else if (v > a->value){
-        a->sR = insertAVL(a->sR, v, h);
+    else if (i > a->id){
+        a->sR = insertAVL(a->sR, i,c,l, h);
     }
     else{ 
         *h = 0;
         return a;
     }
-    
+
     if (*h != 0){
         a->height += *h;
         a = balanceAVL(a);
         *h = (a->height == 0) ? 0 : 1; 
     }
-   
+
     return a;
 }
 
 
-void infix(Tree* a){
+void infix(Tree* a,FILE *file){
   if(a!=NULL){
-      infix(a->sL);
-      printf("[%02d(%2d)]", a->value, a->height);
-      infix(a->sR);
+      infix(a->sL,file);
+      fprintf(file,"%ld;%ld;%ld\n",a->id,a->cap,a->load);
+      infix(a->sR,file);
   }
 }
 
 void prefix(Tree* a){
   if(a!=NULL){
-      printf("[%02d(%2d)]", a->value, a->height);
+      printf("[%02ld(%2d)]", a->id, a->height);
       prefix(a->sL);
       prefix(a->sR);
   }
 }
 
-Tree* removeMax(Tree* a, int* v ){
+Tree* removeMax(Tree* a, long* v ){
   if(a == NULL || a == NULL){
       exit(14);
   }
@@ -229,24 +219,24 @@ Tree* removeMax(Tree* a, int* v ){
   }
   else{
       Tree* pop = a;
-      *v = a->value;
+      *v = a->id;
       a = a->sL;
       free(pop);
   }
   return a;
 }
 
-Tree* removeAVL(Tree* a, int v){
+Tree* removeAVL(Tree* a, long v){
   if(a != NULL){
-      if(v < a->value){
+      if(v < a->id){
           a->sL = removeAVL(a->sL, v);
       }
-      else if(v > a->value){
+      else if(v > a->id){
           a->sR = removeAVL(a->sR, v);
       }
       else{
           if(a->sL != NULL && a->sR != NULL){
-              a->sL = removeMax(a->sL, &(a->value) );
+              a->sL = removeMax(a->sL, &(a->id) );
           }
           else{
               Tree* child = a->sL;
@@ -262,46 +252,35 @@ Tree* removeAVL(Tree* a, int v){
 }
 
 
-int main(int argc, char *argv[]) {
-    FILE *file = fopen("monfichier.txt", "w");
+int main() {
+    FILE *file = fopen("monfichier.csv", "w");
 
-    if (file == NULL) {
+    if (file == NULL){
         printf("Erreur lors de la création du fichier.\n");
         return 1;
     }
     fprintf(file,"Identifiant;Capicité;Consommation\n");
 
-    
-    
     Tree* ab=NULL;
+    Tree* noeud=NULL;
     int ret1=0;
     long v1,v2,v3,v4;
-    long a;
     long b;
     int h;
-    for(int i=0; i<2; i++){
-        ret1=scanf("%ld;%ld;%ld;%ld\n",&v1,&v2,&v3,&v4);
-        if(ret1==4 && v3==0 ){
-            a=v1;
-            ab=createTree(v4);
-        }
-        if(v3!=0) {
-            b=v3;
-        }
-    }
     do{
         ret1=scanf("%ld;%ld;%ld;%ld\n",&v1,&v2,&v3,&v4);
-        if(ret1==4 && a==v1 && v4!=0){
-            ab=insertAVL(ab,v4,&h); 
+        if(ret1==4 && searchAVL(ab,v1,&noeud)==0){
+            ab=insertAVL(ab,v1,v3,v4,&h); 
         }
-        
-        else{
-            fprintf(file,"%ld;%ld;%ld\n",a,b,sumTree(ab));
-            ab=createTree(v4);
-            a=v1;
-            b=v3;
+        else if(ret1==4 && searchAVL(ab,v1,&noeud)==1 && v3!=0){
+            noeud->cap=v3;
         }
+        else if(ret1==4 && searchAVL(ab,v1,&noeud)==1 && v4!=0){
+            noeud->load+=v4;
+        }    
+    
     }while(ret1==4);
+    infix(ab,file);
     fclose(file);
     return 0;
 }
