@@ -1,6 +1,5 @@
 #projet C-WIRE
 
-Le projet consiste à développer un programme permettant de synthétiser les données relatives au système de distribution d’électricité en France. L'objectif est d'analyser et de structurer les informations contenues dans un fichier .csv pour fournir des résultats exploitables, tels que la capacité, la consommation .
 
 ## Table des Matières
 1. [Description](#description)
@@ -10,7 +9,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 ## Description
 
-CY-Fest est conçu pour simplifier l'organisation et la gestion de concert. Il permet de géré la création, la modification et la suppression de concert ainsi que de reserver des places.
+Le projet consiste à développer un programme permettant de synthétiser les données relatives au système de distribution d’électricité en France. L'objectif est d'analyser et de structurer les informations contenues dans un fichier .csv pour fournir des résultats exploitables, tels que la capacité, la consommation.
 
 ## Installation
 
