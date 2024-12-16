@@ -42,7 +42,7 @@ max=
     done
 } < "$FILE"
 
-START_TIME=$(date +%s)
+
 
 
 
@@ -52,7 +52,7 @@ if [ ! -f "$FILE" ]; then
     help_me
     exit 1
 fi
-gcc -o projet projet.c
+
 if [[ "$TYPE_STATION" != "hvb" && "$TYPE_STATION" != "hva" && "$TYPE_STATION" != "lv" ]]; then
     echo "Erreur : Type de station incorrecte ($TYPE_STATION)."
     help_me
@@ -68,8 +68,8 @@ if [[ "$ID_CENTRALE" -gt "$max"  ]]; then
     help_me
 fi
 
-
-
+gcc -o projet projet.c
+START_TIME=$(date +%s)
 
 if [[ "$ID_CENTRALE" != "ALL" ]]; then
   
@@ -133,7 +133,20 @@ else
   fi
 fi
 
+if [ -f "$LV" ]; then
+  (tail -n +2 $LV | sort -t';'  -k2,2 $LV) > lv_all_triee.csv |gnuplot << EOF
+  set terminal png
+  set output "graph.png"
+  set datafile separator ';'
+  set title "Graphique Exemple"
+  set xlabel "X-axis"
+  set ylabel "Y-axis"
+  set grid
+  plot "lv_all_triee.csv" using 1:2 with lines title "Valeur1"
+EOF
 
+    
+fi
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
 echo "Traitement terminé en $DURATION secondes."
