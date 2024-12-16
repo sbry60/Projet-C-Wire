@@ -96,6 +96,7 @@ if [[ "$ID_CENTRALE" != "ALL" ]]; then
   elif [[ "$TYPE_STATION" == "lv" ]] && [[ "$TYPE_CONS" == "all" ]]; then 
   awk -F';' -v id="$ID_CENTRALE" '$1==id && $4 != "-" && $7 == "-"||$1==id && $3 != "-" && $4 != "-" && $8 == "-"' $FILE | cut -d';' -f4,6,7,8 | tr '-' '0'| ./projet
   mv monfichier.csv lv_all_$ID_CENTRALE.csv
+  LV=lv_all_$ID_CENTRALE.csv
 
   else
   echo "Erreur"
@@ -124,12 +125,14 @@ else
   elif [[ "$TYPE_STATION" == "lv" ]] && [[ "$TYPE_CONS" == "all" ]]; then 
   awk -F';' '$4 != "-" && $7 == "-"||$3 != "-" && $4 != "-" && $8 == "-"' $FILE | cut -d';' -f4,6,7,8 | tr '-' '0'| ./projet
   mv monfichier.csv lv_all.csv
+  LV=lv_all.csv
 
   else
   echo "Erreur"
 
   fi
 fi
+
 
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
