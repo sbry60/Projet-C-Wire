@@ -134,15 +134,30 @@ else
 fi
 
 if [ -f "$LV" ]; then
-  (tail -n +2 $LV | sort -t';'  -k2,2 $LV) > lv_all_triee.csv |gnuplot << EOF
-  set terminal png
-  set output "graph.png"
+  a=$(wc -l < $LV)
+  if [[ "$a" -lt 20 ]]; then
+    tail -n +2 "$LV" | awk -F';' '{result=$2-$3; print $1";"0";" result}' | sort -t';' -k2,2n > lv_all_triee.csv
+  fi
+  if [[ "$a" -gt 20 ]]; then
+    tail -n +2 "$LV" | awk -F';' '($2 - $3) > 0 {print $1 ";" ($2 - $3)}' "$LV" | sort -t';' -k2,2n > green_values.csv
+
+    tail -n +2 "$LV" | awk -F';' '($2 - $3) < 0 {print $1 ";" ($2 - $3)}' "$LV" | sort -t';' -k2,2n > red_values.csv
+    
+  fi
+  
+  gnuplot << EOF
+  set terminal pngcairo size 1400,600 enhanced font 'Verdana,12'
+  set output 'bar_chart.png'
+  set title "Graphique en Barres"
+  set xlabel "Stations LV"
+  set ylabel "Énergie (kWh)"
   set datafile separator ';'
-  set title "Graphique Exemple"
-  set xlabel "X-axis"
-  set ylabel "Y-axis"
-  set grid
-  plot "lv_all_triee.csv" using 1:2 with lines title "Valeur1"
+  set style data histograms
+  set boxwidth  0.4
+  set xtics rotate by -45
+  set style fill solid 1.0 border -1
+  plot "lv_all_triee.csv" using 2:xtic(1) with boxes title "Station les - chargés"
+     
 EOF
 
     
