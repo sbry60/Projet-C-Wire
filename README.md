@@ -1,4 +1,4 @@
-# projet C-WIRE
+# Projet C-WIRE
 
 
 ## Table des Matières
