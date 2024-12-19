@@ -23,7 +23,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 1. Clonez le dépôt :
     ```bash
     git clone https://github.com/IS277/Cy-fest.git
-    cd cy-fest
+   
     ```
     
 2. Compilez le projet :
@@ -39,11 +39,11 @@ Pour exécuter l'application :
     ```
 
 ## Options:
-hva comp
-hvb comp
-lv all
-lv comp
-lv indiv
+hva comp,
+hvb comp,
+lv all,
+lv comp,
+lv indiv,
     
 ## Auteurs
 
