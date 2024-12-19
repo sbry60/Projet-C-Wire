@@ -15,7 +15,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 ### Prérequis
 
-- `gcc` doit être installé sur votre machine.
+
 - Système d'exploitation compatible avec la compilation C (Linux, macOS, Windows avec Cygwin ou MinGW).
 
 ### Étapes d'installation
@@ -35,8 +35,15 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 Pour exécuter l'application :
     ```
-    ./exec
+    ./nom_du_fichier.sh fichier option type central help
     ```
+
+## Options:
+hva comp
+hvb comp
+lv all
+lv comp
+lv indiv
     
 ## Auteurs
 
