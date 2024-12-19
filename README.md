@@ -22,7 +22,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 1. Clonez le dépôt :
     ```bash
-    git clone https://github.com/IS277/Cy-fest.git
+[    git clone https://github.com/IS277/Cy-fest.git](https://github.com/sbry60/Projet-C-Wire)
    
     ```
     
