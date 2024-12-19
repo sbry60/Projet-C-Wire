@@ -16,7 +16,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 ### Prérequis
 
 
-- Système d'exploitation compatible avec la compilation C (Linux, macOS, Windows avec Cygwin ou MinGW).
+- Système d'exploitation compatible avec la compilation C et shell(Linux, macOS, Windows avec Cygwin ou MinGW).
 
 ### Étapes d'installation
 
