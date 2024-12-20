@@ -1,45 +1,42 @@
 #include "tri.h"
-/*Fonction recherche d'un noeud et qui stocke l'adresse du noeud s'il le trouve */
-int searchAVL(Tree* a, long v,Tree** b){
+/* Function to search for a node and store its address if found */
+int searchAVL(Tree* a, long v, Tree** b){
   if(a == NULL){
       return 0;
   }
   else if(a->id == v){
-      *b=a;
+      *b = a;
       return 1;
   }
   else if(v > a->id){
-      return searchAVL(a->sR,v,b);
+      return searchAVL(a->sR, v, b);
   }
   else{
-      return searchAVL(a->sL,v,b);
+      return searchAVL(a->sL, v, b);
   }
 }
 
-/*Fonction insertion dans un arbre de type AVL */
-
-Tree* insertAVL(Tree* a,long i,long c,long l,int *h){
-    /*h est utilise pour la mise à jour des hauteurs */
-    /*Insertion du noeud et la valeur de h est de 1*/
+/* Function to insert a node into an AVL tree */
+Tree* insertAVL(Tree* a, long i, long c, long l, int *h){
+    /* h is used to update the heights */
+    /* Insert the node and set h to 1 */
     if (a == NULL){
         *h = 1;
-        return createTree(i,c,l);
-
+        return createTree(i, c, l);
     }
     else if (i < a->id){ 
-        a->sL = insertAVL(a->sL,i,c,l,h);
-        *h = -*h; /*on change le signe de h quand on insere a gauche */
-
+        a->sL = insertAVL(a->sL, i, c, l, h);
+        *h = -*h; /* Change the sign of h when inserting on the left */
     }
     else if (i > a->id){
-        a->sR = insertAVL(a->sR,i,c,l,h);
+        a->sR = insertAVL(a->sR, i, c, l, h);
     }
-    /*si l'dentifiant est déja présent, on retourne le noeud et on met h à 0 pour que la prochaine condition n'aie pas lieu */
+    /* If the identifier is already present, return the node and set h to 0 so the next condition does not apply */
     else{ 
         *h = 0;
         return a;
     }
-    /* cette condition signifie s'il y a une insertion, on rajoute h à la hauteur et on equilibre */
+    /* This condition means if there is an insertion, we add h to the height and balance the tree */
     if (*h != 0){
         a->height += *h;
         a = balanceAVL(a);
@@ -49,17 +46,17 @@ Tree* insertAVL(Tree* a,long i,long c,long l,int *h){
     return a;
 }
 
-/*aprcours infix qui permet d'écrire les données de l'AVL dans un fichier */
-void infix(Tree* a,FILE *file){
-  if(a!=NULL){
-      infix(a->sL,file);
-      fprintf(file,"%ld;%ld;%ld\n",a->id,a->cap,a->load);
-      infix(a->sR,file);
+/* Infix traversal to write AVL data to a file */
+void infix(Tree* a, FILE *file){
+  if(a != NULL){
+      infix(a->sL, file);
+      fprintf(file, "%ld;%ld;%ld\n", a->id, a->cap, a->load);
+      infix(a->sR, file);
   }
 }
 
-/*Fonction suppression du maximum de l'arbre */
-Tree* removeMax(Tree* a, long* v ){
+/* Function to remove the maximum node from the tree */
+Tree* removeMax(Tree* a, long* v){
   if(a == NULL || a == NULL){
       exit(14);
   }
@@ -74,7 +71,8 @@ Tree* removeMax(Tree* a, long* v ){
   }
   return a;
 }
-/*Fonction suppression d'un noeud de l'arbre */
+
+/* Function to remove a node from the tree */
 Tree* removeAVL(Tree* a, long v){
   if(a != NULL){
       if(v < a->id){
@@ -85,7 +83,7 @@ Tree* removeAVL(Tree* a, long v){
       }
       else{
           if(a->sL != NULL && a->sR != NULL){
-              a->sL = removeMax(a->sL, &(a->id) );
+              a->sL = removeMax(a->sL, &(a->id));
           }
           else{
               Tree* child = a->sL;
@@ -99,6 +97,8 @@ Tree* removeAVL(Tree* a, long v){
   }
   return a;
 }
+
+/* Function to delete the entire tree */
 void deleteTree(Tree* a) {
     if (a == NULL) {
         return;
