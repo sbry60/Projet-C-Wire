@@ -8,7 +8,7 @@ int main() {
         printf("Error while creating the file.\n");
         return 1;
     }
-    fprintf(file,"Identifier;Capacity;Consumption\n");
+    fprintf(file,"Identifier;Capacity;Load\n");
 
     Tree* tr = NULL;   /* Initialization of the tree for calculations */
     Tree* node = NULL; /* Initialization of the node to store the address for the searchAVL function */
