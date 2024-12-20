@@ -43,25 +43,7 @@ if [[ "$TYPE_CONS" != "comp" && "$TYPE_CONS" != "indiv" && "$TYPE_CONS" != "all"
     echo "Erreur : Type de consommateur invalide ($TYPE_CONSUMER)."
     help_me
 fi
-max=
 
-{
-    read -r header
-    while IFS=';' read -r col1 _; do
-        if [ -n "$col1" ]; then
-            if [ -z "$max" ]; then
-                max=$col1
-            elif [ "$col1" -gt "$max" ]; then
-                max=$col1
-            fi
-        fi
-    done
-} < "$FILE"
-
-if [[ "$ID_CENTRALE" -gt "$max"  ]]; then
-    echo "Erreur : identifiant centrale incorrecte ($ID_CENTRALE)."
-    help_me
-fi
 make -C codeC
 if [ ! -f ./codeC/exec ]; then
     echo "L'exécutable n'existe pas."
@@ -171,9 +153,8 @@ if [ -f "$LV" ]; then
     } else {
         print $1";"($2 - $3)";"0
     }
-}' "$LV"  > test/lv_all_minmax.csv
-  (head -n 10 test/lv_all_minmax.csv && tail -n 10 test/lv_all_minmax.csv) > test/temp.csv
-  mv test/temp.csv test/lv_all_minmax.csv
+}' "$LV" > test/lv_all_minmax.csv
+  sort -t';' -k2,2n -k3,3n test/lv_all_minmax.csv -o test/lv_all_minmax.csv
   gnuplot << EOF
   set terminal pngcairo size 1400,600 enhanced font 'Verdana,12'
   set output 'graphs/bar_chart.png'
