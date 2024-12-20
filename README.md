@@ -38,7 +38,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 Pour exécuter l'application :
     ```
-    ./nom_du_fichier.sh fichier option type central help
+    ./nom_du_fichier.sh input/fichier option type central help
     ```
 
 ## Options:
@@ -52,3 +52,5 @@ lv indiv.
 
 - **Iyed SOUISSI** - (https://github.com/IS277)
 - **Yasser SABAR** - (https://github.com/sbry60)
+- **Zakaria dihaj** -
+- (https://github.com/zikodihaj)
