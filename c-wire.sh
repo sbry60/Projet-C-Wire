@@ -157,7 +157,6 @@ else
 
   else
   echo "Erreur"
-
   fi
 fi
 if [ -f "$LV" ]; then
@@ -166,13 +165,13 @@ if [ -f "$LV" ]; then
   echo "Nombre de postes LV insuffisants pour pouvoir effectué le minmax"
   fi
   if [[ "$a" -gt 20 ]]; then
-    tail -n +2 "$LV" | awk -F';' '{
+    tail -n +2 "$LV" | sort -t';' -k3,3n | awk -F';' '{
     if ($2-$3 > 0) {
         print $1 ";"0";" ($2 - $3)
     } else {
         print $1";"($2 - $3)";"0
     }
-}' "$LV" | sort -t';' -k2,2n -k3,3n > test/lv_all_minmax.csv
+}' "$LV"  > test/lv_all_minmax.csv
   (head -n 10 test/lv_all_minmax.csv && tail -n 10 test/lv_all_minmax.csv) > test/temp.csv
   mv test/temp.csv test/lv_all_minmax.csv
   gnuplot << EOF
