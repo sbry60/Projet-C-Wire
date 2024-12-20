@@ -1,7 +1,7 @@
 #include "tri.h"
 
-/*Fonction création arbre*/
-Tree *createTree(long i,long c,long l){
+/* Function to create a tree */
+Tree *createTree(long i, long c, long l){
   Tree *nv = malloc(sizeof(Tree));
   if (nv == NULL) {
     exit(2);
@@ -11,22 +11,23 @@ Tree *createTree(long i,long c,long l){
   nv->load = l;
   nv->sR = NULL;
   nv->sL = NULL;
-  nv->height= 0;
+  nv->height = 0;
   return nv;
 }
-/*Fonction pour savoir si le noeud est vide*/
+
+/* Function to check if the node is empty */
 int empty(Tree *a) { 
   return a == NULL; 
 }
 
-/*Fonction pour avoir la hauteur d'un noeud*/
+/* Function to get the height of a node */
 int getHeight(Tree* a) {
     if (a == NULL)
         return 0;
     return a->height;
 }
 
-/*Fonction pour savoir si le fils gauche existe*/
+/* Function to check if the left child exists */
 int existSL(Tree *a) {
   if (empty(a)) {
     exit(4);
@@ -34,7 +35,7 @@ int existSL(Tree *a) {
   return a->sL != NULL;
 }
 
-/*Fonction pour savoir si le fils droit existe*/
+/* Function to check if the right child exists */
 int existSR(Tree *a){
   if (empty(a)){
     exit(5);
@@ -42,44 +43,47 @@ int existSR(Tree *a){
   return a->sR != NULL;
 }
 
-/*Fonction pour ajouter un fils gauche */
-int addSL(Tree *a, int i,int c,int l) {
+/* Function to add a left child */
+int addSL(Tree *a, int i, int c, int l) {
   if (empty(a) || existSL(a)) {
     return 0;
   }
-  a->sL = createTree(i,c,l);
+  a->sL = createTree(i, c, l);
   return 1;
 }
 
-/*Fonction pour ajouter un fils droit */
-int addSR(Tree *a, long i,long c,long l) {
+/* Function to add a right child */
+int addSR(Tree *a, long i, long c, long l) {
   if (empty(a) || existSR(a)) {
     return 0;
   }
-  a->sR = createTree(i,c,l);
+  a->sR = createTree(i, c, l);
   return 1;
 }
 
-/*Fonction pour obtenir le minimum entre deux valeurs */
+/* Function to get the minimum of two values */
 int min2(int a, int b){
   return a < b ? a : b;
 }
-/*Fonction pour obtenir le maximum entre deux valeurs */
+
+/* Function to get the maximum of two values */
 int max2(int a, int b){
   return a > b ? a : b;
 }
-/*Fonction pour obtenir le minimum entre troix valeurs */
+
+/* Function to get the minimum of three values */
 int min3(int a, int b, int c){
   return min2(a, min2(b, c));
 }
-/*Fonction pour obtenir le maximum entre troix valeurs */
+
+/* Function to get the maximum of three values */
 int max3(int a, int b, int c){
   return max2(a, max2(b, c));
 }
 
-/*Fonction pour faire une rotation gauche */
+/* Function to perform a left rotation */
 Tree* rotateLeft(Tree* root){
-  if(root==NULL || root->sR == NULL){
+  if(root == NULL || root->sR == NULL){
          exit(7);
     }
   Tree* pivot  = root->sR;
@@ -93,9 +97,9 @@ Tree* rotateLeft(Tree* root){
   return root;
 }
 
-/*Fonction pour faire une rotation droite */
+/* Function to perform a right rotation */
 Tree* rotateRight(Tree* root){
-  if(root==NULL || root->sL == NULL){
+  if(root == NULL || root->sL == NULL){
       exit(7);
   }
   Tree* pivot  = root->sL;
@@ -109,31 +113,31 @@ Tree* rotateRight(Tree* root){
   return root;
 }
 
-/*Fonction pour faire une double rotation gauche */
+/* Function to perform a double left rotation */
 Tree* doubleRotateLeft(Tree* root){
-  if(root==NULL || root->sR == NULL){
+  if(root == NULL || root->sR == NULL){
       exit(8);
   }
   root->sR = rotateRight(root->sR);
   return rotateLeft(root);
 }
 
-/*Fonction pour faire une double rotation droite */
+/* Function to perform a double right rotation */
 Tree* doubleRotateRight(Tree* root){
-  if(root==NULL || root->sL == NULL){
+  if(root == NULL || root->sL == NULL){
       exit(9);
   }
-  root->sL= rotateLeft(root->sL);
+  root->sL = rotateLeft(root->sL);
   return rotateRight(root);
 }
 
-/*Fonction pour réquilibrer un arbre */
+/* Function to balance an AVL tree */
 Tree* balanceAVL(Tree* root){
   if(root == NULL){
       exit(10);
   }
 
-  if(root->height>= 2){
+  if(root->height >= 2){
       if(root->sR == NULL){
           exit(11);
       }
@@ -157,6 +161,3 @@ Tree* balanceAVL(Tree* root){
   }
   return root;
 }
-
-
-
