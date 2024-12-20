@@ -17,6 +17,9 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 
 - Système d'exploitation compatible avec la compilation C et shell(Linux, macOS, Windows avec Cygwin ou MinGW).
+- Assurez-vous que Gnuplot est installé sur votre système.
+- gcc doit être installé sur votre machine.
+- Pensez à ajouter la commande chmod+x pour compiler le fichier shell.
 
 ### Étapes d'installation
 
@@ -43,7 +46,7 @@ hva comp,
 hvb comp,
 lv all,
 lv comp,
-lv indiv,
+lv indiv.
     
 ## Auteurs
 
