@@ -44,6 +44,10 @@ if [[ "$TYPE_CONS" != "comp" && "$TYPE_CONS" != "indiv" && "$TYPE_CONS" != "all"
     help_me
 fi
 
+if [[ "$ID_CENTRALE" -gt "$max"  ]]; then
+    echo "Erreur : identifiant centrale incorrecte ($ID_CENTRALE)."
+    help_me
+fi
 make -C codeC
 if [ ! -f ./codeC/exec ]; then
     echo "L'exécutable n'existe pas."
@@ -61,13 +65,13 @@ fi
 
 START_TIME=$(date +%s)
 if [ -d "tmp" ]; then
-    rm -rf "tmp"
+    rm -rf tmp
 fi
 if [ -d "graphs" ]; then
-    rm -rf "graphs"
+    rm -rf graphs
 fi
 if [ -d "test" ]; then
-    rm -rf "test"
+    rm -rf test
 fi
 
 mkdir tmp graphs test
@@ -134,7 +138,7 @@ else
   elif [[ "$TYPE_STATION" == "lv" ]] && [[ "$TYPE_CONS" == "all" ]]; then 
   awk -F';' '$4 != "-" && $7 == "-"||$3 != "-" && $4 != "-" && $8 == "-"' $FILE | cut -d';' -f4,7,8 | tr '-' '0'| ./codeC/exec
   mv test/monfichier.csv test/lv_all.csv
-  sort -t';' -k2,2n test/lv_all.csv -o test/lv_all.csv
+  sort -t';' -k3,3n test/lv_all.csv -o test/lv_all.csv
   LV=test/lv_all.csv
 
   else
@@ -147,14 +151,14 @@ if [ -f "$LV" ]; then
   echo "Nombre de postes LV insuffisants pour pouvoir effectué le minmax"
   fi
   if [[ "$a" -gt 20 ]]; then
-    tail -n +2 "$LV" | sort -t';' -k3,3n | awk -F';' '{
+    tail -n +2 "$LV" | awk -F';' '{
     if ($2-$3 > 0) {
         print $1 ";"0";" ($2 - $3)
     } else {
         print $1";"($2 - $3)";"0
     }
-}' "$LV" > test/lv_all_minmax.csv
-  sort -t';' -k2,2n -k3,3n test/lv_all_minmax.csv -o test/lv_all_minmax.csv
+}' "$LV"  > test/temp.csv
+  (head -n 10 test/temp.csv && tail -n 10 test/temp.csv) > test/lv_all_minmax.csv
   gnuplot << EOF
   set terminal pngcairo size 1400,600 enhanced font 'Verdana,12'
   set output 'graphs/bar_chart.png'
