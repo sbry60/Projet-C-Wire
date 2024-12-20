@@ -1,42 +1,49 @@
 #include "tri.h"
 int main() {
-    /*Création du fichier */
+    /* File creation */
     FILE *file = fopen("test/monfichier.csv", "w");
 
-    /*Vérification de son existence*/
+    /* Check if the file was successfully created */
     if (file == NULL){
-        printf("Erreur lors de la création du fichier.\n");
+        printf("Error while creating the file.\n");
         return 1;
     }
-    fprintf(file,"Identifiant;Capacité;Consommation\n");
+    fprintf(file,"Identifier;Capacity;Consumption\n");
 
-    Tree* ab=NULL;   /*Initialisation de l'arbre pour le calcul */
-    Tree* node=NULL;/*Initialisation du noeud qui stocke l'adresse pour la fonction searchAVL*/
-    int ret1=0;/*Variable pour la verification du scanf*/ 
-    long v1,v2,v3;/*Variable qui stocke respectivement l'identifiant de la station, capacité, consommation*/ 
-    int h;/*Variable pour la fonction insertAVL*/
+    Tree* tr = NULL;   /* Initialization of the tree for calculations */
+    Tree* node = NULL; /* Initialization of the node to store the address for the searchAVL function */
+    int ret1 = 0; /* Variable for scanf verification */ 
+    long id1, cap1, loa1; /* Variables to store station ID, capacity, and consumption respectively */ 
+    int h; /* Variable for the insertAVL function */
 
-    do{
-        /*Récupération du filtrage du code C*/
-        ret1=scanf("%ld;%ld;%ld\n",&v1,&v2,&v3);
-        /*si toute les variables sont là et que le noeud représentant de la station n'est pas là on insère un nouveau noeud*/
-        if(ret1==3 && searchAVL(ab,v1,&node)==0){
-            ab=insertAVL(ab,v1,v2,v3,&h); 
+    do {
+        /* Reading and filtering input from C code */
+        ret1 = scanf("%ld;%ld;%ld\n", &id1, &cap1, &loa1);
+
+        /* If all variables are present and the node representing the station does not exist, insert a new node */
+        if (ret1 == 3 && searchAVL(tr, id1, &node) == 0){
+            tr = insertAVL(tr, id1, cap1, loa1, &h); 
         }
-        /*si toute les variables sont là et que le noeud représentant de la station est là et que la capacité est différent de 0, ce qui signifie que c'est une ligne qui nous donne la capacité de la station, noeud->cap caut cette valeur */
-        else if(ret1==3 && searchAVL(ab,v1,&node)==1 && v2!=0){
-            node->cap=v2;
+        /* If all variables are present, the node representing the station exists, 
+           and the capacity is not 0, it means this line gives the station's capacity.
+           Update `node->cap` with this value */
+        else if (ret1 == 3 && searchAVL(tr, id1, &node) == 1 && cap1 != 0){
+            node->cap = cap1;
         }
-        /*si toute les variables sont là et que le noeud représentant de la station est là et que la consommation est différent de 0, ce qui signifie que c'est les lignes des consommateurs, on rajoute cette valeur à noeud->load */
-        else if(ret1==3 && searchAVL(ab,v1,&node)==1 && v3!=0){
-            node->load+=v3;
+        /* If all variables are present, the node representing the station exists, 
+           and the consumption is not 0, it means this line provides consumption data.
+           Add this value to `node->load` */
+        else if (ret1 == 3 && searchAVL(tr, id1, &node) == 1 && loa1 != 0){
+            node->load += loa1;
         }    
 
-    }while(ret1==3);
-    /*On ajoute les données recueillies dans le fichier créé */
-    infix(ab,file);
-    /*si toute les variables sont là et que le noeud représentant de la station est là et que la capacité est différent de 0, ce qui signifie que c'est une ligne qui nous donne la capacité de la station, noeud->cap caut cette valeur */
+    } while (ret1 == 3);
+
+    /* Add the collected data to the created file */
+    infix(tr, file);
+
+    /* Close the file and delete the tree */
     fclose(file);
-    deleteTree(ab);
+    deleteTree(tr);
     return 0;
 }
