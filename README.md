@@ -52,5 +52,4 @@ lv indiv.
 
 - **Iyed SOUISSI** - (https://github.com/IS277)
 - **Yasser SABAR** - (https://github.com/sbry60)
-- **Zakaria dihaj** -
-- (https://github.com/zikodihaj)
+- **Zakaria dihaj** - (https://github.com/zikodihaj)
