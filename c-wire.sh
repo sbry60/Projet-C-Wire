@@ -44,6 +44,7 @@ if [[ "$TYPE_CONS" != "comp" && "$TYPE_CONS" != "indiv" && "$TYPE_CONS" != "all"
     help_me
 fi
 
+make clean -C codeC
 # Compile the C code
 make -C codeC
 if [ ! -f ./codeC/exec ]; then
