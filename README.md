@@ -19,7 +19,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 - Système d'exploitation compatible avec la compilation C et shell(Linux, macOS, Windows avec Cygwin ou MinGW).
 - Assurez-vous que Gnuplot est installé sur votre système.
 - gcc doit être installé sur votre machine.
-- Pensez à insatller la commande chmod+x pour compiler le fichier c-wire.sh.
+- Pensez à installer la commande chmod+x pour compiler le fichier c-wire.sh
 
 ### Étapes d'installation
 
@@ -38,7 +38,7 @@ Le projet consiste à développer un programme permettant de synthétiser les do
 
 Pour exécuter l'application :
     ```
-    ./nom_du_fichier.sh input/fichier option type central help
+    ./nom_du_fichier.sh input/fichier option id_central help
     ```
 
 ## Options:
@@ -52,4 +52,4 @@ lv indiv.
 
 - **Iyed SOUISSI** - (https://github.com/IS277)
 - **Yasser SABAR** - (https://github.com/sbry60)
-- **Zakaria dihaj** - (https://github.com/zikodihaj)
+- **Zakaria DIHAJ** - (https://github.com/zikodihaj)
