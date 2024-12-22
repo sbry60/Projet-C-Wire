@@ -46,7 +46,8 @@ hva comp,
 hvb comp,
 lv all,
 lv comp,
-lv indiv.
+lv indiv,
+lv all.
     
 ## Auteurs
 
